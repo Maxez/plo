@@ -1,7 +1,7 @@
 /*
  * Phoenix-RTOS
  *
- * plo - operating system loader
+ * Operating system loader
  *
  * Timer driver
  *
@@ -19,20 +19,14 @@
 
 #include <lib/types.h>
 
-#define TIMER_EXPIRE 0
-#define TIMER_VALCHG 4
-
-
-/* Function initializes timer controller */
-extern void timer_init(void);
+/* Timer flags */
+#define TIMER_EXPIRE    (0 << 0)
+#define TIMER_KEYSTROKE (1 << 0)
+#define TIMER_VALCHG    (1 << 1)
 
 
 /* Function waits for specific period of time or event */
-extern int timer_wait(u32 ms, int flags, volatile u16 *p, u16 v);
-
-
-/* Function resets timer controller */
-extern void timer_done(void);
+extern int timer_wait(unsigned int ms, unsigned char flags, volatile unsigned char *val, unsigned char *src, unsigned int n);
 
 
 #endif

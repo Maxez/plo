@@ -22,36 +22,20 @@
 #include <lib/types.h>
 
 
-/* Function initializes clocks, peripherals and basic controllers */
-extern void hal_init(void);
-
-
-/* Function resets basic controllers */
-extern void hal_done(void);
-
-
-/* Function returns information about CPU */
-extern const char *hal_cpuInfo(void);
+/* Function starts kernel loaded into memory */
+extern int hal_launch(void);
 
 
 /* Function sets kernel's entry address */
 extern void hal_setKernelEntry(addr_t addr);
 
 
-/* Function translates virtual address into physical */
-extern addr_t hal_vm2phym(addr_t addr);
-
-
-/* Function starts kernel loaded into memory */
-extern int hal_launch(void);
+/* Function invalidates data cache region */
+extern void hal_invalDCacheAddr(addr_t addr, size_t sz);
 
 
 /* Function invalidates all data cache */
 extern void hal_invalDCacheAll(void);
-
-
-/* Function invalidates data cache region */
-extern void hal_invalDCacheAddr(addr_t addr, size_t sz);
 
 
 /* Function disables interrupts */
@@ -63,19 +47,31 @@ extern void hal_sti(void);
 
 
 /* Function registers interrupts in controller */
-extern int hal_irqinst(u16 irq, int (*isr)(u16, void *), void *data);
+extern int hal_irqinst(unsigned int irq, int (*isr)(unsigned int, void *), void *data);
 
 
 /* Function removes interrupts from controller */
-extern int hal_irquninst(u16 irq);
-
-
-/* Function initializes console which uses polling methods to transmit data */
-extern void hal_consoleInit(void);
+extern int hal_irquninst(unsigned int irq);
 
 
 /* Function writes data to uart controller */
 extern void hal_consolePrint(const char *s);
+
+
+/* Function translates virtual address into physical */
+extern addr_t hal_vm2phym(addr_t addr);
+
+
+/* Function returns information about CPU */
+extern const char *hal_cpuInfo(void);
+
+
+/* Function resets basic controllers */
+extern void hal_done(void);
+
+
+/* Function initializes clocks, peripherals and basic controllers */
+extern void hal_init(void);
 
 
 #endif

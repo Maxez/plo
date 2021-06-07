@@ -29,14 +29,14 @@ include cmds/Makefile
 OBJS += $(addprefix $(PREFIX_O), _startc.o plo.o syspage.o)
 
 
-all: $(PREFIX_PROG_STRIPPED)plo-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).elf  $(PREFIX_PROG_STRIPPED)plo-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).img\
-     $(PREFIX_PROG_STRIPPED)plo-ram-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).elf $(PREFIX_PROG_STRIPPED)plo-ram-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).img
-
+all: $(PREFIX_PROG_STRIPPED)plo-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).img
+     #$(PREFIX_PROG_STRIPPED)plo-ram-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).elf $(PREFIX_PROG_STRIPPED)plo-ram-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).img
 
 
 $(BUILD_DIR)/script.plo:
 	@printf "TOUCH script.plo\n"
 	$(SIL)touch $(BUILD_DIR)/script.plo
+
 
 $(PREFIX_O)/script.o.plo: $(PREFIX_O)cmds/cmd.o $(BUILD_DIR)/script.plo
 	@mkdir -p $(@D)
@@ -48,6 +48,7 @@ $(PREFIX_PROG)plo-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).elf: $(OBJS) $(PREFIX_O)/
 	@mkdir -p $(@D)
 	@(printf "LD  %-24s\n" "$(@F)");
 	$(SIL)$(LD) $(LDFLAGS) -e _start --section-start .init=$(INIT_FLASH) $(BSS) -o $(PREFIX_PROG)plo-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).elf $(OBJS) $(PREFIX_O)/script.o.plo $(GCCLIB)
+
 
 $(PREFIX_PROG)plo-ram-$(TARGET_FAMILY)-$(TARGET_SUBFAMILY).elf: $(OBJS) $(PREFIX_O)/script.o.plo
 	@mkdir -p $(@D)
@@ -68,6 +69,7 @@ $(PREFIX_PROG_STRIPPED)%.img: $(PREFIX_PROG_STRIPPED)%.elf
 .PHONY: clean
 clean:
 	@echo "rm -rf $(BUILD_DIR)"
+
 
 ifneq ($(filter clean,$(MAKECMDGOALS)),)
 	$(shell rm -rf $(BUILD_DIR))
